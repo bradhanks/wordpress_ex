@@ -2,6 +2,7 @@ defmodule WordpressEx.Pages do
   @moduledoc """
   Wordpress Page endpoints
   """
+
   import WordpressEx.Client, only: [get: 2]
   import WordpressEx.StructComposer, only: [compose: 2]
   alias WordpressEx.Model.Page
@@ -19,7 +20,7 @@ defmodule WordpressEx.Pages do
   """
   def list(opts \\ []) do
     get("/pages", opts)
-    |> compose(Page)
+    |> handle_response(Page)
   end
 
   @doc """
@@ -27,14 +28,22 @@ defmodule WordpressEx.Pages do
 
   ## Examples:
 
-      WordpressEX.Pages.find(123)
-      WordpressEX.Pages.find(123, context: "edit")
+      WordpressEx.Pages.find(123)
+      WordpressEx.Pages.find(123, context: "edit")
 
   ## API Reference
   https://developer.wordpress.org/rest-api/reference/pages/#retrieve-a-page
   """
-  def find(id, opts \\ []) do
+  def find(id, opts \\ []) when is_integer(id) do
     get("/pages/#{id}", opts)
-    |> compose(Page)
+    |> handle_response(Page)
+  end
+
+  defp handle_response({:ok, data}, struct) do
+    compose(data, struct)
+  end
+
+  defp handle_response({:error, reason}, _struct) do
+    {:error, reason}
   end
 end

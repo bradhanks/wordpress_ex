@@ -2,6 +2,7 @@ defmodule WordpressEx.Posts do
   @moduledoc """
   Wordpress Post endpoints
   """
+
   import WordpressEx.Client, only: [get: 2]
   import WordpressEx.StructComposer, only: [compose: 2]
   alias WordpressEx.Model.Post
@@ -19,7 +20,7 @@ defmodule WordpressEx.Posts do
   """
   def list(opts \\ []) do
     get("/posts", opts)
-    |> compose(Post)
+    |> handle_response(Post)
   end
 
   @doc """
@@ -27,14 +28,22 @@ defmodule WordpressEx.Posts do
 
   ## Examples:
 
-      WordpressEX.Posts.find(123)
-      WordpressEX.Posts.find(123, context: view)
+      WordpressEx.Posts.find(123)
+      WordpressEx.Posts.find(123, context: "view")
 
   ## API Reference
   https://developer.wordpress.org/rest-api/reference/posts/#retrieve-a-post
   """
-  def find(id, opts \\ []) do
+  def find(id, opts \\ []) when is_integer(id) do
     get("/posts/#{id}", opts)
-    |> compose(Post)
+    |> handle_response(Post)
+  end
+
+  defp handle_response({:ok, data}, struct) do
+    compose(data, struct)
+  end
+
+  defp handle_response({:error, reason}, _struct) do
+    {:error, reason}
   end
 end
