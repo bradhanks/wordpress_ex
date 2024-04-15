@@ -32,7 +32,7 @@ defmodule WordpressEx.MixProject do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:httpoison, "~> 1.0"},
+      {:httpoison, "~> 2.0"},
       {:jason, "~> 1.0"},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false}
     ]
