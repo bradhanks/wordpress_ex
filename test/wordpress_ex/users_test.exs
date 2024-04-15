@@ -4,7 +4,7 @@ defmodule WordpressEx.UsersTest do
   describe "list" do
     test "returns all users" do
       {:ok, [user | users]} = WordpressEx.Users.list()
-      assert Enum.count(users) == 0
+      assert Enum.empty?(users)
       assert user.name == "Human Made"
     end
   end

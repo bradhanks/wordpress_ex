@@ -1,5 +1,5 @@
 defmodule WordpressEx.Test.Client do
-  @base_url Application.get_env(:wordpress_ex, :base_url)
+  @base_url Application.compile_env(:wordpress_ex, :base_url)
 
   def request(method, @base_url <> "/" <> path, _body, _headers, _options) do
     filename =
